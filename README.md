@@ -6,6 +6,10 @@
 
 <img width="893" alt="Screen Shot 2022-05-25 at 4 41 52 PM" src="https://user-images.githubusercontent.com/10179494/170372259-b3e97200-49a1-48cd-9390-9670058b95a5.png">
 
+## Run
+
+> yarn start
+
 ## Features
 
 - [x] Commit registration

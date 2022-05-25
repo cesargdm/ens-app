@@ -8,7 +8,9 @@
 
 ## Run
 
-> yarn start
+```bash
+yarn start
+```
 
 ## Features
 

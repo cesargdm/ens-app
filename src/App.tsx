@@ -1,6 +1,4 @@
 /* eslint-disable no-magic-numbers */
-import './App.css'
-
 import { useEffect, useState } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import {
@@ -9,91 +7,22 @@ import {
   useContractWrite,
   useWaitForTransaction,
 } from 'wagmi'
-import { formatUnits } from 'ethers/lib/utils'
 
-import ensAbi from './ens-abi.json'
+import contractInterface from './ens-abi.json'
+import { formatEther, getRandomHash, getYearsInSeconds } from './utils'
+import {
+  useIsAvailable,
+  useMinCommitmentAge,
+  useRentPrice,
+} from './utils/hooks'
 
 const ENS_ADDRESS = '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5'
-
-const contractConfig = {
-  addressOrName: ENS_ADDRESS,
-  contractInterface: ensAbi,
-}
-
 const ENS_RESOLVER = '0xf6305c19e814d2a75429Fd637d01F7ee0E77d615'
+// const ENS_CONTROLLER = '0x6F628b68b30Dc3c17f345c9dbBb1E483c2b7aE5c'
+
+const ensResolverConfig = { addressOrName: ENS_ADDRESS, contractInterface }
+
 // ENS2 Resolver Mainnet 0x4976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41
-
-function getYearsInSeconds(years: number) {
-  return years * 31556952
-}
-
-function getRandomHash() {
-  const random = new Uint8Array(32)
-  crypto.getRandomValues(random)
-  const salt =
-    '0x' +
-    Array.from(random)
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join('')
-
-  return salt
-}
-
-function useRentPrice({
-  years,
-  domainName,
-}: {
-  years?: number
-  domainName?: string
-}) {
-  const { data: rentPrice } = useContractRead(contractConfig, 'rentPrice', {
-    args: [domainName, getYearsInSeconds(years as number)],
-    enabled: Boolean(domainName && years),
-  })
-
-  return rentPrice
-}
-
-function useIsAvailable({ domainName }: { domainName?: string }): boolean {
-  const { data: isAvailable } = useContractRead(contractConfig, 'available', {
-    args: [domainName],
-    enabled: Boolean(domainName),
-  })
-
-  return Boolean(isAvailable)
-}
-
-function useMinCommitmentAge() {
-  const { data: minCommitMentAge } = useContractRead(
-    contractConfig,
-    'minCommitmentAge',
-    { staleTime: 3600 },
-  )
-
-  return minCommitMentAge?.toNumber()
-}
-
-// function useMakeCommitment(
-//   {
-//     domainName,
-//     owner,
-//     secret,
-//   }: {
-//     domainName?: string
-//     owner?: string
-//     secret?: string
-//   },
-//   options: { enabled: boolean; onSuccess?: (data: any) => void },
-// ) {
-//   return useContractRead(contractConfig, 'makeCommitmentWithConfig', {
-//     args: [domainName, owner, secret, ENS_RESOLVER, owner],
-//     ...options,
-//   })
-// }
-
-function formatEther(value: any) {
-  return value ? `${formatUnits(value.toString(), 18).toString()} ETH` : ''
-}
 
 function getUnfinished() {
   const prev = localStorage.getItem('@cesargdm/unfinished')
@@ -129,7 +58,7 @@ function App() {
     write: writeCommit,
     data: writeCommitData,
     isLoading: isLoadingCommit,
-  } = useContractWrite(contractConfig, 'commit', {
+  } = useContractWrite(ensResolverConfig, 'commit', {
     onSuccess() {
       const data = { secret, domainName, years }
       localStorage.setItem('@cesargdm/unfinished', JSON.stringify(data))
@@ -140,8 +69,7 @@ function App() {
   const { isLoading: isWaitingCommitTx } = useWaitForTransaction({
     hash: commitTxHash,
     enabled: Boolean(commitTxHash),
-    onSuccess(confirmTransaction) {
-      console.log({ confirmTransaction })
+    onSuccess() {
       const data = { secret, commitTimestamp: Date.now(), domainName, years }
       setCommitTimestamp(data.commitTimestamp)
       localStorage.setItem('@cesargdm/unfinished', JSON.stringify(data))
@@ -150,7 +78,7 @@ function App() {
 
   // Create commitment hash
   const { refetch: makeCommitmentWithConfig } = useContractRead(
-    contractConfig,
+    ensResolverConfig,
     'makeCommitmentWithConfig',
     {
       args: [
@@ -165,15 +93,23 @@ function App() {
     },
   )
 
-  const { write: writeRegister } = useContractWrite(
-    contractConfig,
-    'registerWithConfig',
-    {
-      onError(error) {
-        console.log(error)
+  const {
+    write: writeRegister,
+    data: writeRegisterCommitData,
+    isLoading: isLoadingRegister,
+  } = useContractWrite(ensResolverConfig, 'registerWithConfig')
+
+  const registerTx = writeRegisterCommitData?.hash
+  const { isLoading: isWaitingRegisterTx, data: registerTxData } =
+    useWaitForTransaction({
+      hash: registerTx,
+      enabled: Boolean(registerTx),
+      onSuccess() {
+        // console.log({ registerTransaction })
+        setCommitTimestamp(0)
+        localStorage.removeItem('@cesargdm/unfinished')
       },
-    },
-  )
+    })
 
   const waitTime = Math.max(
     minCommitmentAge - Math.ceil((Date.now() - Number(commitTimestamp)) / 1000),
@@ -193,10 +129,6 @@ function App() {
 
   function handleCommit() {
     if (secret) {
-      console.log(
-        [domainName, account?.address, secret, ENS_RESOLVER, account?.address],
-        { rentPrice },
-      )
       makeCommitmentWithConfig()
       return
     }
@@ -204,22 +136,9 @@ function App() {
     const newSecret = getRandomHash()
 
     setSecret(newSecret)
-    // makeCommitmentWithConfig()
   }
 
   function handleRegister() {
-    console.log(
-      [
-        domainName, // name
-        account?.address, // owner
-        getYearsInSeconds(years), // duration
-        secret, // secret
-        ENS_RESOLVER, // resolver
-        account?.address, // addr
-      ],
-      { rentPrice: rentPrice?.toString() },
-    )
-
     writeRegister({
       args: [
         domainName, // name
@@ -246,11 +165,22 @@ function App() {
   }
 
   return (
-    <main>
+    <main style={{ padding: 10 }}>
       <ConnectButton />
-      <h1>ENS Registration</h1>
-
-      {commitTimestamp > 0 ? (
+      <h1>Register</h1>
+      {registerTxData ? (
+        <>
+          <div>
+            <p>
+              <b>{domainName}.eth</b>
+            </p>
+          </div>
+          <div>
+            <p>Now lets set it as your primary domain</p>
+            <button>Set as primary</button>
+          </div>
+        </>
+      ) : commitTimestamp > 0 ? (
         <>
           <div>
             <p>
@@ -262,9 +192,16 @@ function App() {
               Now we need to wait 60 seconds so we can ensure no one else is
               trying to purchase the domain
             </p>
-            <p>Wait {waitTime}s</p>
-            <button disabled={waitTime > 0} onClick={handleRegister}>
-              Register
+            {waitTime ? <p>Wait {waitTime}s</p> : <p>Ready!</p>}
+            <button
+              disabled={waitTime > 0 || isWaitingRegisterTx}
+              onClick={handleRegister}
+            >
+              {isWaitingRegisterTx
+                ? 'Waiting Transaction'
+                : isLoadingRegister
+                ? 'Waiting Confirmation'
+                : 'Register'}
             </button>
           </div>
         </>
@@ -313,7 +250,7 @@ function App() {
         </>
       )}
 
-      <div>
+      {/* <div>
         <code>
           {JSON.stringify(
             {
@@ -328,7 +265,7 @@ function App() {
             2,
           )}
         </code>
-      </div>
+      </div> */}
     </main>
   )
 }

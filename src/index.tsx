@@ -13,7 +13,7 @@ import {
 import { chain, createClient, WagmiProvider } from 'wagmi'
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.rinkeby, chain.goerli],
+  [chain.rinkeby, chain.goerli],
   [apiProvider.alchemy(process.env.ALCHEMY_ID), apiProvider.fallback()],
 )
 
@@ -31,7 +31,9 @@ const wagmiClient = createClient({
 import App from './App'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root') as HTMLElement
+
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <WagmiProvider client={wagmiClient}>
       <RainbowKitProvider chains={chains}>

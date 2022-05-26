@@ -1,0 +1,10 @@
+{
+  "register": "Register",
+  "manage": "Manage",
+  "domainName": "Domain name",
+  "example": "Example",
+  "placeholders.domainSearch": "Look for availability",
+  "years": "Years",
+  "setAsPrimary": "Set as primary",
+  "ready": "Ready"
+}

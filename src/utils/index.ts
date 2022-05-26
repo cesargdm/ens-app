@@ -1,21 +1,37 @@
 import { formatUnits } from 'ethers/lib/utils'
 
+const formatter = new Intl.NumberFormat('es-US', {
+  minimumFractionDigits: 3,
+  maximumFractionDigits: 3,
+})
+
+const SECONDS_IN_YEAR = 31557600
+const RANDOM_CHARACTER_LENGTH = 32
+const HEX_CHARACTERS = 16
+
 export function getYearsInSeconds(years: number) {
-  return years * 31556952
+  return years * SECONDS_IN_YEAR
 }
 
 export function getRandomHash() {
-  const random = new Uint8Array(32)
+  const random = new Uint8Array(RANDOM_CHARACTER_LENGTH)
+
   crypto.getRandomValues(random)
+
   const salt =
     '0x' +
     Array.from(random)
-      .map((b) => b.toString(16).padStart(2, '0'))
+      .map((b) => b.toString(HEX_CHARACTERS).padStart(2, '0'))
       .join('')
 
   return salt
 }
 
 export function formatEther(value: any) {
-  return value ? `${formatUnits(value.toString(), 18).toString()} ETH` : ''
+  if (value) {
+    const amount = Number(formatUnits(value.toString(), 18))
+    return `${formatter.format(amount)} ETH`
+  }
+
+  return ''
 }

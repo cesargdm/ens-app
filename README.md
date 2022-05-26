@@ -2,9 +2,7 @@
 
 > Better name tbd
 
-<img width="893" alt="Screen Shot 2022-05-25 at 4 41 58 PM" src="https://user-images.githubusercontent.com/10179494/170372255-f53ed6be-f64b-465f-a9a0-da78d005ef3f.png">
-
-<img width="893" alt="Screen Shot 2022-05-25 at 4 41 52 PM" src="https://user-images.githubusercontent.com/10179494/170372259-b3e97200-49a1-48cd-9390-9670058b95a5.png">
+<img width="928" alt="Screen Shot 2022-05-26 at 12 46 49 AM" src="https://user-images.githubusercontent.com/10179494/170424754-4e8e3053-0dda-4125-90a3-8d626f0db36d.png">
 
 ## Run
 

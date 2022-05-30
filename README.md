@@ -2,7 +2,7 @@
 
 > An alternate frontend, better name tbd
 
-<img width="928" alt="Screen Shot 2022-05-26 at 12 46 49 AM" src="https://user-images.githubusercontent.com/10179494/170424754-4e8e3053-0dda-4125-90a3-8d626f0db36d.png">
+![May-30-2022 14-34-21](https://user-images.githubusercontent.com/10179494/171052275-49063184-aea7-4f7d-9c46-b14271cf9e9d.gif)
 
 > Design expired in [Rainbow Wallet](https://rainbow.me/).
 

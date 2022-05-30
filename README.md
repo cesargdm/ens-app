@@ -1,4 +1,10 @@
-# ENS App
+<center>
+
+<h1>ENS App</h1>
+
+[![Depfu](https://badges.depfu.com/badges/605a2b518b026592a14879d632104601/overview.svg)](https://depfu.com/github/cesargdm/ens-app?project_id=35481)
+
+</center>
 
 > An alternate frontend, better name tbd
 

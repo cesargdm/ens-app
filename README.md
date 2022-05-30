@@ -23,6 +23,7 @@ yarn start
 - [x] Set primary name
 - [ ] Set avatar
 - [ ] Set additional data
+- [ ] Renew
 
 ## TODO
 

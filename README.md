@@ -14,7 +14,7 @@
 
 ## About
 
-This is an alternate frontend for [https://app.ens.domains](ENS), using [wagmi](https://wagmi.sh/), [Rainbow Kit](https://www.rainbowkit.com/) and [Fleek](https://fleek.co/) for hosting.
+This is an alternate frontend for [ENS](https://app.ens.domains), using [wagmi](https://wagmi.sh/), [Rainbow Kit](https://www.rainbowkit.com/) and [Fleek](https://fleek.co/) for hosting.
 
 ## Run
 

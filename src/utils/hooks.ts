@@ -5,7 +5,6 @@ import contractInterface from 'utils/contracts/ens-registrar/abi.json'
 import { getYearsInSeconds } from '.'
 
 const ENS_ADDRESS = '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5'
-// const ENS_RESOLVER = '0xf6305c19e814d2a75429Fd637d01F7ee0E77d615'
 
 const ensResolverConfig = { addressOrName: ENS_ADDRESS, contractInterface }
 
@@ -47,21 +46,3 @@ export function useMinCommitmentAge() {
 
   return minCommitMentAge?.toNumber()
 }
-
-// function useMakeCommitment(
-//   {
-//     domainName,
-//     owner,
-//     secret,
-//   }: {
-//     domainName?: string
-//     owner?: string
-//     secret?: string
-//   },
-//   options: { enabled: boolean; onSuccess?: (data: any) => void },
-// ) {
-//   return useContractRead(ensResolverConfig, 'makeCommitmentWithConfig', {
-//     args: [domainName, owner, secret, ENS_RESOLVER, owner],
-//     ...options,
-//   })
-// }

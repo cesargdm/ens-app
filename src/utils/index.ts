@@ -21,6 +21,7 @@ export function getRandomHash() {
   const salt =
     '0x' +
     Array.from(random)
+      // eslint-disable-next-line no-magic-numbers
       .map((b) => b.toString(HEX_CHARACTERS).padStart(2, '0'))
       .join('')
 
@@ -29,6 +30,7 @@ export function getRandomHash() {
 
 export function formatEther(value: any) {
   if (value) {
+    // eslint-disable-next-line no-magic-numbers
     const amount = Number(formatUnits(value.toString(), 18))
     return `Ξ${formatter.format(amount)}`
   }

@@ -1,8 +1,7 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { Award, Image, MoreHorizontal, Plus, Trash } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useAccount, useContractWrite, useEnsName } from 'wagmi'
-import styled from 'styled-components/macro'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -11,47 +10,8 @@ import Loader from 'components/Loader'
 
 import { contractConfig } from 'utils/contracts/ens-controller'
 
-const GET_REGISTRATIONS = gql`
-  query GetRegistrations($id: String!) {
-    account(id: $id) {
-      id
-      registrations {
-        id
-        labelName
-        expiryDate
-      }
-    }
-  }
-`
-
-const DropDownItem = styled(DropdownMenu.Item)`
-  padding: 8px;
-  border-radius: 12px;
-  cursor: default;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-weight: 700;
-
-  &[data-disabled] {
-    opacity: 0.5;
-  }
-  :hover:not([data-disabled]) {
-    background-color: var(--colors--primary-translucent);
-  }
-`
-
-const DomainItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  border-radius: 16px;
-
-  :hover {
-    background-color: #fafafa;
-  }
-`
+import { AvatarImg, DomainItem, DropDownItem, MenuContent } from './styled'
+import GET_REGISTRATIONS from './getRegistrations.gql'
 
 function Manage() {
   const { t } = useTranslation()
@@ -76,21 +36,12 @@ function Manage() {
   }
 
   return (
-    <div>
+    <>
       <h2>{t(`manage`)}</h2>
       {data?.account?.registrations?.map((registration: any) => (
         <DomainItem key={registration.id}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <img
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 20,
-                backgroundColor: '#eee',
-              }}
-              src=""
-              alt=""
-            />
+            <AvatarImg src="" alt="" />
             <div>
               <p style={{ fontSize: '1.1rem' }}>
                 <b>{registration.labelName}.eth</b>
@@ -112,14 +63,7 @@ function Manage() {
             <IconButton as={DropdownMenu.Trigger}>
               {isLoading ? <Loader /> : <MoreHorizontal />}
             </IconButton>
-            <DropdownMenu.Content
-              style={{
-                backgroundColor: 'white',
-                padding: 4,
-                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-                borderRadius: 16,
-              }}
-            >
+            <MenuContent>
               <DropDownItem onSelect={() => handleSetPrimary(registration)}>
                 <Award size={14} strokeWidth={3} />
                 {t(`setAsPrimary`)}
@@ -137,11 +81,11 @@ function Manage() {
                 {t(`renounceOwnership`)}
               </DropDownItem>
               <DropdownMenu.Arrow />
-            </DropdownMenu.Content>
+            </MenuContent>
           </DropdownMenu.Root>
         </DomainItem>
       ))}
-    </div>
+    </>
   )
 }
 

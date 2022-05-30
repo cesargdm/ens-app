@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { useAccount } from 'wagmi'
 
-import Register from 'components/Register'
-import Manage from 'components/Manage'
+import Register from 'containers/Register'
+import Manage from 'containers/Manage'
 
 const TabList = styled(Tabs.List)`
   display: flex;

@@ -8,7 +8,12 @@ const {
   VITE_APP_ETHERSCAN_API_KEY: etherscanKey,
 } = process.env
 
-export const chains = [chain.rinkeby, chain.goerli, chain.mainnet]
+export const chains = [
+  chain.rinkeby,
+  chain.goerli,
+  // NOTE: not ready
+  //chain.mainnet
+]
 
 export const ensEndpoints = {
   [chain.mainnet.id]: 'https://api.thegraph.com/subgraphs/name/ensdomains/ens',

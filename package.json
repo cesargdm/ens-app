@@ -3,23 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@apollo/client": "3.6.5",
     "@radix-ui/react-dropdown-menu": "0.1.6",
     "@radix-ui/react-tabs": "0.1.5",
     "@rainbow-me/rainbowkit": "0.2.1",
-    "@testing-library/jest-dom": "5.16.4",
-    "@testing-library/react": "13.2.0",
-    "@testing-library/user-event": "14.2.0",
-    "@types/jest": "27.5.1",
-    "@types/node": "17.0.35",
-    "@types/react": "18.0.9",
     "@types/react-dom": "18.0.5",
     "buffer": "6.0.3",
     "date-fns": "2.28.0",
     "ethers": "5.6.8",
     "graphql": "^16.5.0",
-    "i18next": "21.8.4",
+    "i18next": "21.8.5",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-feather": "2.0.10",
@@ -29,14 +29,7 @@
     "styled-components": "5.3.5",
     "typescript": "4.7.2",
     "util": "0.12.4",
-    "wagmi": "0.4.3",
-    "web-vitals": "2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "wagmi": "0.4.4"
   },
   "browserslist": {
     "production": [
@@ -51,6 +44,11 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@types/jest": "^27.5.1",
+    "@types/node": "^17.0.36",
+    "@types/react": "^18.0.9",
     "@types/styled-components": "^5.1.25",
     "eslint-config-cretia": "^0.2.0",
     "prettier": "^2.6.2",

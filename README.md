@@ -37,8 +37,10 @@ yarn start
 - [x] Better styling
 - [ ] Better name
 - [ ] Documentation
-- [ ] Testing
+- [ ] Testing/CI
 - [ ] Cleanup code
+- [ ] Better onboarding screen
+- [ ] PWA
 
 ## License
 

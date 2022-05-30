@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { Check, ChevronRight, Lock, Search } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import slugify from 'slugify'
-import styled from 'styled-components'
 import {
   useNetwork,
   useAccount,
@@ -19,8 +18,9 @@ import { useIsAvailable, useMinCommitmentAge, useRentPrice } from 'utils/hooks'
 
 import IconButton from 'components/IconButton'
 import Loader from 'components/Loader'
+import Button from 'components/Button'
 
-import { InputContainer } from './styled'
+import { Description, Info, InputContainer, YearInput } from './styled'
 
 const ENS_ADDRESS = '0x283af0b28c62c092c9727f1ee09c02ca627eb7f5'
 
@@ -33,91 +33,6 @@ function getResolver(networkId?: number) {
     return '0x4976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41'
   return ''
 }
-
-const YearInput = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 16px;
-  margin-bottom: 16px;
-  input {
-    padding: 8px !important;
-    text-align: center;
-    width: 100%;
-    flex: 1;
-  }
-
-  button {
-    margin: 0;
-    font-size: 1.5rem;
-    line-height: 1;
-  }
-`
-
-const Info = styled.p<{ error?: boolean; success?: boolean }>`
-  text-align: center;
-  margin-top: 16px;
-  margin-bottom: 8px;
-  color: ${({ error, success }) =>
-    error
-      ? 'red'
-      : success
-      ? 'hsl(105.97014925373135, 99.01477832512316%, 39.80392156862745%)'
-      : '#333'};
-  background-color: ${({ error, success }) =>
-    error
-      ? 'rgba(255, 0, 0, 0.1)'
-      : success
-      ? 'rgb(246, 255, 246)'
-      : '#f2f2f2'};
-  font-weight: 900;
-  padding: 8px 16px;
-  border-radius: 16px;
-`
-
-const Button = styled.button<{ pulse?: boolean }>`
-  background-color: var(--colors--primary);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  :disabled {
-    opacity: 0.5;
-  }
-
-  :active {
-    transform: scale(0.98);
-  }
-
-  svg {
-    height: 16px;
-    width: 16px;
-    stroke-width: 3px;
-  }
-
-  @keyframes pulse {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  ${({ pulse }) => pulse && `animation: pulse 1.5s infinite`}
-`
-
-const Description = styled.p`
-  text-align: center;
-  opacity: 0.5;
-  font-weight: 700;
-  margin-bottom: 16px;
-`
 
 const ensResolverConfig = { addressOrName: ENS_ADDRESS, contractInterface }
 
@@ -296,11 +211,7 @@ function Register() {
             Locked <b>{domainName}.eth</b>!
           </p>
           <div>
-            <Info>
-              Now we need to wait 60 seconds so we can ensure no one else is
-              trying to purchase the domain
-            </Info>
-
+            <Info>{t(`register.locked.info`)}</Info>
             <Button
               disabled={waitTime > 0 || isWaitingRegisterTx}
               onClick={handleRegister}
@@ -323,9 +234,7 @@ function Register() {
         </>
       ) : isDomainSelected ? (
         <>
-          <Description>
-            Select the number of years you would like your domain for
-          </Description>
+          <Description>{t(`register.years.description`)}</Description>
           <InputContainer>
             <YearInput>
               <IconButton
@@ -370,7 +279,7 @@ function Register() {
                 t('waitingConfirmation')
               ) : (
                 <>
-                  {t(secret ? `lock` : `confirm`)}
+                  {secret ? t(`lock`) : t(`confirm`)}
                   {secret ? <Lock /> : <ChevronRight />}
                 </>
               )}
@@ -383,7 +292,7 @@ function Register() {
       ) : (
         <>
           <InputContainer>
-            <Description>Search available names in ENS</Description>
+            <Description>{t(`register.search.description`)}</Description>
             <label>
               <b>{t(`domainName`)}</b>
               <div style={{ position: 'relative' }}>

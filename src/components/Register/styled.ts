@@ -1,20 +1,25 @@
 import styled from 'styled-components/macro'
 
-export const SearchBar = styled.div`
+export const InputContainer = styled.div`
   div {
     display: flex;
-    border: 1px solid var(--colors--border);
-    border-radius: 14px;
-    overflow: hidden;
 
-    :has(input:active),
-    :has(input:focus) {
-      box-shadow: 0 0 0 2px var(--colors--primary);
+    svg {
+      top: calc(50% - 11px);
+      left: 10px;
+      position: absolute;
     }
 
     input {
       outline: none;
-      padding: 8px 12px;
+      padding: 8px 12px 8px 40px;
+      width: 100%;
+      display: block;
+      border: 1px solid var(--colors--border);
+
+      :focus {
+        box-shadow: 0 0 0 3px var(--colors--primary);
+      }
     }
 
     button {

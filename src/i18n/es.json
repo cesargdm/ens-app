@@ -1,5 +1,17 @@
 {
   "years": "Años",
   "domainName": "Nombre de dominio",
-  "placeholders.domainSearch": "Busca disponibilidad"
+  "placeholders.domainSearch": "Busca disponibilidad",
+  "continue": "Continuar",
+  "register": "Registrar",
+  "year": "Año",
+  "wait": "Espere",
+  "lock": "Bloquear",
+  "confirm": "Confirmar",
+  "waitingConfirmation": "Esperando confirmación",
+  "waitingTransaction": "Esperando transacción",
+  "manage": "Administre",
+  "setAsPrimary": "Fijar como primario",
+  "setNFTAvatar": "Añadr avatar NFT",
+  "primary": "Primario"
 }

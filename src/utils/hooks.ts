@@ -1,12 +1,11 @@
 import { useContractRead } from 'wagmi'
 
-import contractInterface from '../ens-abi.json'
+import contractInterface from 'utils/contracts/ens-registrar/abi.json'
 
 import { getYearsInSeconds } from '.'
 
 const ENS_ADDRESS = '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5'
 // const ENS_RESOLVER = '0xf6305c19e814d2a75429Fd637d01F7ee0E77d615'
-// const ENS_CONTROLLER = '0x6F628b68b30Dc3c17f345c9dbBb1E483c2b7aE5c'
 
 const ensResolverConfig = { addressOrName: ENS_ADDRESS, contractInterface }
 
@@ -17,26 +16,26 @@ export function useRentPrice({
   years?: number
   domainName?: string
 }) {
-  const { data: rentPrice } = useContractRead(ensResolverConfig, 'rentPrice', {
-    args: [domainName, getYearsInSeconds(years as number)],
-    enabled: Boolean(domainName && years),
-  })
+  const { data: rentPrice, isLoading } = useContractRead(
+    ensResolverConfig,
+    'rentPrice',
+    {
+      args: [domainName, getYearsInSeconds(years as number)],
+      enabled: Boolean(domainName && years),
+    },
+  )
 
-  return rentPrice
+  return { rentPrice, isLoading }
 }
 
-export function useIsAvailable({
-  domainName,
-}: {
-  domainName?: string
-}): boolean {
-  const { data: isAvailable } = useContractRead(
+export function useIsAvailable({ domainName }: { domainName?: string }) {
+  const { data: isAvailable, isLoading } = useContractRead(
     ensResolverConfig,
     'available',
     { args: [domainName], enabled: Boolean(domainName) },
   )
 
-  return Boolean(isAvailable)
+  return { isAvailable: Boolean(isAvailable), isLoading }
 }
 
 export function useMinCommitmentAge() {

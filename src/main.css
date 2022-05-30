@@ -1,0 +1,114 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  /* system font */
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 600;
+  font-size: 16px;
+  background-color: var(--colors--background);
+  color: var(--colors--text);
+}
+
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+input[type='submit'],
+button {
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  padding: 6px 18px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+input[type='submit']:hover,
+button:hover {
+  opacity: 0.8;
+}
+
+label b {
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 2px;
+  text-align: center;
+}
+input:not([type='submit']),
+button {
+  color: var(--colors--text);
+  background-color: transparent;
+  display: block;
+  width: 100%;
+  padding: 6px;
+  font-size: 1.2rem;
+  border-radius: 30px;
+  font-weight: 800;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+input:not([type='submit']) {
+  border: 1px solid #ddd;
+}
+
+h1 {
+  color: var(--colors--text);
+  font-size: 4rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+b {
+  font-weight: bolder;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+:root {
+  --colors--background: #f9f9f9;
+  --colors--background-content: #fff;
+  --colors--primary: #139df2;
+  --colors--primary-translucent: rgba(15, 178, 242, 0.1);
+
+  --colors--text: #111;
+
+  --colors--border: #f2f2f2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --colors--background: #000;
+    --colors--background-content: #222;
+    --colors--primary: #139df2;
+    --colors--primary-translucent: rgba(242, 242, 242, 0.1);
+
+    --colors--text: #f9f9f9;
+
+    --colors--border: #333;
+  }
+}

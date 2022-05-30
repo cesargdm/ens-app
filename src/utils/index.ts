@@ -30,7 +30,7 @@ export function getRandomHash() {
 export function formatEther(value: any) {
   if (value) {
     const amount = Number(formatUnits(value.toString(), 18))
-    return `${formatter.format(amount)} ETH`
+    return `Ξ${formatter.format(amount)}`
   }
 
   return ''

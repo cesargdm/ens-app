@@ -1,5 +1,4 @@
 /* eslint-disable no-magic-numbers */
-import { chain } from '@wagmi/core'
 import { useEffect, useState } from 'react'
 import { Check, ChevronRight, Lock, Search } from 'react-feather'
 import { useTranslation } from 'react-i18next'
@@ -12,7 +11,8 @@ import {
   useWaitForTransaction,
 } from 'wagmi'
 
-import contractInterface from 'utils/contracts/ens-registrar/abi.json'
+import { contractConfig } from 'utils/contracts/ens-registrar'
+import { getResolverAddress } from 'utils/contracts/ens-resolver'
 import { formatEther, getRandomHash, getYearsInSeconds } from 'utils'
 import { useIsAvailable, useMinCommitmentAge, useRentPrice } from 'utils/hooks'
 
@@ -21,20 +21,6 @@ import Loader from 'components/Loader'
 import Button from 'components/Button'
 
 import { Description, Info, InputContainer, YearInput } from './styled'
-
-const ENS_ADDRESS = '0x283af0b28c62c092c9727f1ee09c02ca627eb7f5'
-
-function getResolver(networkId?: number) {
-  if (networkId === chain.rinkeby.id)
-    return '0xf6305c19e814d2a75429Fd637d01F7ee0E77d615'
-  if (networkId === chain.goerli.id)
-    return '0x4B1488B7a6B320d2D721406204aBc3eeAa9AD329'
-  if (networkId === chain.mainnet.id)
-    return '0x4976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41'
-  return ''
-}
-
-const ensResolverConfig = { addressOrName: ENS_ADDRESS, contractInterface }
 
 function getUnfinished() {
   const prev = localStorage.getItem('@cesargdm/unfinished')
@@ -79,7 +65,7 @@ function Register() {
     write: writeCommit,
     data: writeCommitData,
     isLoading: isLoadingCommit,
-  } = useContractWrite(ensResolverConfig, 'commit', {
+  } = useContractWrite(contractConfig, 'commit', {
     onSuccess() {
       const data = { secret, domainName, years }
       localStorage.setItem('@cesargdm/unfinished', JSON.stringify(data))
@@ -98,14 +84,14 @@ function Register() {
 
   // Create commitment hash
   const { refetch: makeCommitmentWithConfig } = useContractRead(
-    ensResolverConfig,
+    contractConfig,
     'makeCommitmentWithConfig',
     {
       args: [
         domainName,
         account?.address,
         secret,
-        getResolver(activeChain?.id),
+        getResolverAddress(activeChain?.id),
         account?.address,
       ],
       enabled: false,
@@ -117,7 +103,7 @@ function Register() {
     write: writeRegister,
     data: writeRegisterCommitData,
     isLoading: isLoadingRegister,
-  } = useContractWrite(ensResolverConfig, 'registerWithConfig')
+  } = useContractWrite(contractConfig, 'registerWithConfig')
   const registerTx = writeRegisterCommitData?.hash
   const { isLoading: isWaitingRegisterTx, data: registerTxData } =
     useWaitForTransaction({
@@ -170,7 +156,7 @@ function Register() {
         account?.address, // owner
         getYearsInSeconds(years),
         secret,
-        getResolver(activeChain?.id),
+        getResolverAddress(activeChain?.id),
         account?.address, // addr
       ],
       overrides: {

@@ -16,10 +16,14 @@
 
 This is an alternate frontend for [ENS](https://app.ens.domains), using [wagmi](https://wagmi.sh/), [Rainbow Kit](https://www.rainbowkit.com/) and [Fleek](https://fleek.co/) for hosting.
 
+## Prepare
+
+Install [pnpm](https://pnpm.io)
+
 ## Run
 
 ```bash
-yarn start
+pnpm start
 ```
 
 ## Features
@@ -27,7 +31,7 @@ yarn start
 - [x] Commit registration
 - [x] Register
 - [x] Set primary name
-- [ ] Set avatar
+- [x] Set avatar
 - [ ] Set additional data
 - [ ] Renew
 

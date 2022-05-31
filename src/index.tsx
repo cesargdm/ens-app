@@ -1,8 +1,14 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { StrictMode, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { createClient, useNetwork, WagmiConfig } from 'wagmi'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { chain, createClient, useNetwork, WagmiConfig } from 'wagmi'
+import {
+  ApolloClient,
+  ApolloLink,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from '@apollo/client'
+import { RestLink } from 'apollo-link-rest'
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
 // eslint-disable-next-line import/no-unresolved
 import '@rainbow-me/rainbowkit/styles.css'
@@ -20,6 +26,15 @@ const wagmiClient = createClient({
   provider,
 })
 
+const alchemyRestEndpoints = {
+  [chain.mainnet
+    .id]: `https://eth-mainnet.alchemyapi.io/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
+  [chain.goerli
+    .id]: `https://eth-goerli.alchemyapi.io/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
+  [chain.rinkeby
+    .id]: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.REACT_APP_ALCHEMY_API_KEY}`,
+}
+
 function Root() {
   const [apolloClient, setApolloClient] = useState<ApolloClient<any> | null>(
     null,
@@ -28,9 +43,17 @@ function Root() {
 
   useEffect(() => {
     const client = new ApolloClient({
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      uri: ensEndpoints[activeChain?.id ?? 0] ?? '',
+      link: ApolloLink.from([
+        new RestLink({
+          uri: alchemyRestEndpoints[activeChain?.id ?? 0] ?? '',
+        }),
+        createHttpLink({ uri: ensEndpoints[activeChain?.id ?? 0] }),
+      ]),
       cache: new InMemoryCache(),
+      defaultOptions: {
+        query: { fetchPolicy: 'standby' },
+        watchQuery: { fetchPolicy: 'cache-and-network' },
+      },
     })
 
     setApolloClient(client)

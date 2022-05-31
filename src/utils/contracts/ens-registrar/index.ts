@@ -1,5 +1,7 @@
+// Reverse registrar
 import abi from './abi.json'
 
 export { abi }
-export const address = '0x6F628b68b30Dc3c17f345c9dbBb1E483c2b7aE5c'
+
+export const address = '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5' // <- all nets
 export const contractConfig = { addressOrName: address, contractInterface: abi }

@@ -1,12 +1,8 @@
 import { useContractRead } from 'wagmi'
 
-import contractInterface from 'utils/contracts/ens-registrar/abi.json'
+import { contractConfig } from './contracts/ens-registrar'
 
 import { getYearsInSeconds } from '.'
-
-const ENS_ADDRESS = '0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5'
-
-const ensResolverConfig = { addressOrName: ENS_ADDRESS, contractInterface }
 
 export function useRentPrice({
   years,
@@ -16,7 +12,7 @@ export function useRentPrice({
   domainName?: string
 }) {
   const { data: rentPrice, isLoading } = useContractRead(
-    ensResolverConfig,
+    contractConfig,
     'rentPrice',
     {
       args: [domainName, getYearsInSeconds(years as number)],
@@ -29,7 +25,7 @@ export function useRentPrice({
 
 export function useIsAvailable({ domainName }: { domainName?: string }) {
   const { data: isAvailable, isLoading } = useContractRead(
-    ensResolverConfig,
+    contractConfig,
     'available',
     { args: [domainName], enabled: Boolean(domainName) },
   )
@@ -39,7 +35,7 @@ export function useIsAvailable({ domainName }: { domainName?: string }) {
 
 export function useMinCommitmentAge() {
   const { data: minCommitMentAge } = useContractRead(
-    ensResolverConfig,
+    contractConfig,
     'minCommitmentAge',
     { staleTime: 3600 },
   )
